@@ -1,0 +1,190 @@
+/* Universal styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+/* Body styling */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Logo styling */
+#image {
+    width: 150px;
+    height: 150px;
+    border-radius: 15px;
+    margin: 10px;
+}
+
+/* Header styling */
+h1 {
+    color: rgba(41, 102, 163, 1);
+    margin: 10px;
+    font-size: 2.5rem;
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Form group styling */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 10px 0;
+}
+
+label {
+    color: rgba(41, 102, 163, 1);
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid rgba(41, 102, 163, 1);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Submit button styling */
+#submit {
+    padding: 10px 20px;
+    background-color: rgba(41, 102, 163, 1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+#submit:hover {
+    background-color: rgba(41, 102, 163, 0.8);
+}
+
+/* Link styling */
+#reg {
+    margin-top: 10px;
+}
+
+#reg a {
+    color: rgba(41, 102, 163, 1);
+    font-size: 1rem;
+}
+
+#reg a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    form {
+        width: 90%;
+        max-width: 350px;
+    }
+
+    label {
+        font-size: 1.3rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        font-size: 1rem;
+        padding: 8px;
+    }
+
+    #submit {
+        font-size: 1rem;
+        padding: 12px 20px;
+    }
+
+    #reg a {
+        font-size: 0.9rem;
+    }
+}
+
+/* Very small screens (smaller phones) */
+@media (max-width: 480px) {
+    #image {
+        width: 100px;
+        height: 100px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    label {
+        font-size: 1.2rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 7px;
+        font-size: 0.95rem;
+    }
+
+    #submit {
+        padding: 12px 20px;
+    }
+
+    #reg {
+        margin-top: 15px;
+    }
+
+    #reg a {
+        font-size: 0.9rem;
+    }
+}
+
+/* Larger screens (tablets and desktops) */
+@media (min-width: 1024px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    form {
+        max-width: 450px;
+        width: 100%;
+    }
+
+    label {
+        font-size: 1.5rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    #submit {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+}

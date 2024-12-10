@@ -1,0 +1,259 @@
+/* General Reset and Font */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Ensures the body takes full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #1d4e89; /* Dark blue */
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.welcome {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+header .logout-btn {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #ff5e57; /* Red for logout */
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+header .logout-btn:hover {
+    background-color: #e04e47; /* Darker red on hover */
+}
+
+/* Main Layout */
+main {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.side-nav {
+    width: 250px;
+    background-color: #0c3e63; /* Blue shade for sidebar */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sidebar shadow */
+}
+
+.toggle-btn {
+    background-color: #0074b7; /* Light blue for buttons */
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.toggle-btn:hover {
+    background-color: #00629b; /* Darker blue on hover */
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Admin Section Styling */
+.admin-section {
+    display: none;
+    padding: 20px;
+    background-color: #f1f8fc; /* Light blue background for sections */
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Operation Buttons */
+.operation-buttons button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #0074b7; /* Light blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.operation-buttons button:hover {
+    background-color: #00629b; /* Darker blue */
+}
+
+/* Table Styling */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.data-table th {
+    background-color: #1d4e89; /* Dark blue for table header */
+    color: white;
+}
+
+.data-table .empty {
+    text-align: center;
+    color: #888;
+}
+
+/* Modals */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease; /* Modal animation */
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #1d4e89; /* Matching section color */
+}
+
+.modal .close {
+    color: #aaa;
+    float: right;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smooth transition */
+}
+
+.modal .close:hover {
+    color: #000;
+}
+
+/* Modal Forms */
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content input, 
+.modal-content select, 
+.modal-content button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal-content button {
+    background-color: #0074b7;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.modal-content button:hover {
+    background-color: #00629b;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #1d4e89; /* Dark blue */
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .side-nav {
+        display: none;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .toggle-btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    header .welcome {
+        display: none;
+    }
+
+    .toggle-btn {
+        font-size: 14px;
+    }
+
+    footer {
+        font-size: 0.8rem;
+    }
+}
