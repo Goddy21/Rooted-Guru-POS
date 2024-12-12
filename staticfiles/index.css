@@ -8,118 +8,115 @@
 
 body {
     background-image: url("{% static 'images/pos.jpg' %}");
-    background-size: cover;  /* Ensures the image covers the entire page */
-    background-position: center center;  /* Centers the image */
-    background-attachment: fixed; 
-}
-
-/* Main container */
-.main {
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100vh; /* Full-screen height */
+    overflow: hidden; /* Prevent scrolling */
+}
+
+/* Splash Screen Container */
+.splash-screen {
     text-align: center;
-    margin-top: 50px;
-    padding: 0 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 2s ease-in-out;
 }
 
-/* Logo Image Styling */
-.main img {
-    width: 200px;
-    height: 200px;
-    border-radius: 15px;
-    margin: 10px;
-    object-fit: cover; /* Ensures the image maintains its aspect ratio */
+/* Logo Styling */
+.splash-screen .logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    animation: bounce 2s infinite;
 }
 
-.main img:hover {
-    animation: shake 0.5s;
-    animation-iteration-count: infinite;
-}
-
-/* Shake animation */
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-    20% { transform: translate(-3px, 0px) rotate(1deg); }
-    30% { transform: translate(3px, 2px) rotate(0deg); }
-    40% { transform: translate(1px, -1px) rotate(1deg); }
-    50% { transform: translate(-1px, 2px) rotate(-1deg); }
-    60% { transform: translate(-3px, 1px) rotate(0deg); }
-    70% { transform: translate(3px, 1px) rotate(-1deg); }
-    80% { transform: translate(-1px, -1px) rotate(1deg); }
-    90% { transform: translate(1px, 2px) rotate(0deg); }
-    100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
-
-/* Heading Styling */
-.main h1 {
+/* Title Styling */
+.splash-screen .title {
     color: rgba(41, 102, 163, 1);
-    margin: 10px;
-    font-size: 2.5rem;
+    font-size: 1.8rem;
+    margin: 20px 0;
+    animation: fadeIn 3s;
 }
 
-/* Button Styling */
-.main button {
-    background-color: rgba(41, 102, 163, 1); /* Blue shade background */
-    padding: 20px 60px;
-    border-radius: 10px;
-    border: none;
-    margin: 10px;
-    color: white; /* White text */
-    font-size: 2rem;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
+/* Loading Text */
+.splash-screen .loading-text {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 10px;
+    animation: pulse 1.5s infinite;
 }
 
-.main button:hover {
-    background-color: rgba(41, 102, 163, 1); /* Same blue shade on hover */
-    color: white; /* White text on hover */
-    border: none; /* Ensure there's no border on hover */
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .main {
-        margin-top: 30px;
+    .splash-screen {
+        padding: 20px;
     }
 
-    /* Adjusting the size of the image and text for smaller screens */
-    .main img {
-        width: 150px;
-        height: 150px;
-    }
-
-    .main h1 {
-        font-size: 2rem; /* Smaller font size for mobile screens */
-    }
-
-    .main button {
-        font-size: 1.5rem; /* Smaller button size */
-        padding: 15px 50px; /* Adjust padding for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    /* For very small screens (like phones) */
-    .main {
-        margin-top: 20px;
-    }
-
-    /* Further reduce the size of the logo */
-    .main img {
+    .splash-screen .logo {
         width: 120px;
         height: 120px;
     }
 
-    .main h1 {
-        font-size: 1.5rem; /* Further reduce font size */
+    .splash-screen .title {
+        font-size: 1.5rem;
     }
 
-    .main button {
-        font-size: 1.2rem; /* Even smaller button text */
-        padding: 12px 40px;
+    .splash-screen .loading-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .splash-screen {
+        padding: 15px;
+    }
+
+    .splash-screen .logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .splash-screen .title {
+        font-size: 1.2rem;
+    }
+
+    .splash-screen .loading-text {
+        font-size: 0.9rem;
     }
 }

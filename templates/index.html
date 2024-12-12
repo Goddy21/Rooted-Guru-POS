@@ -7,12 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
     <title>ROOTED GURU POS</title>
+    <script>
+        // JavaScript for auto-redirect
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                window.location.href = "{% url 'login' %}"; // Redirect to login page
+            }, 5000); // Redirect after 3 seconds
+        });
+    </script>
 </head>
 <body>
-    <div class="main">
-        <img src="{% static 'images/logo.jpg' %}" alt="Logo"/>
-        <h1>ROOTED GURU POINT OF SALE SYSTEM</h1>
-        <button type="button"><a href="{% url 'login' %}">Get Started</a></button>
+    <div class="splash-screen">
+        <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="logo" />
+        <h1 class="title">ROOTED GURU POINT OF SALE SYSTEM</h1>
+        <p class="loading-text">Loading...</p>
     </div>
 </body>
 </html>
