@@ -1,0 +1,36 @@
+<form method="POST" action="{% url 'update_product' %}">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+
+    <label for="product_code">Product Code:</label>
+    <input type="text" name="product_code" value="{{ product.product_code }}" required>
+
+    <label for="name">Product Name:</label>
+    <input type="text" name="name" value="{{ product.name }}" required>
+
+    <label for="price">Price:</label>
+    <input type="number" name="price" value="{{ product.price }}" step="0.01" required>
+
+    <label for="product_weight">Product Weight:</label>
+    <input type="text" name="product_weight" value="{{ product.product_weight }}" required>
+
+    <label for="description">Description:</label>
+    <textarea name="description">{{ product.description }}</textarea>
+
+    <label for="stock_level">Stock Level:</label>
+    <input type="number" name="stock_level" value="{{ product.stock_level }}" required>
+
+    <label for="sales_count">Sales Count:</label>
+    <input type="number" name="sales_count" value="{{ product.sales_count }}" required>
+
+    <label for="order">Order Date:</label>
+    <input type="date" name="order" value="{{ product.order }}">
+
+    <label for="last_purchase">Last Purchase Date:</label>
+    <input type="date" name="last_purchase" value="{{ product.last_purchase }}">
+
+    <label for="ordered">Ordered Date:</label>
+    <input type="date" name="ordered" value="{{ product.ordered }}">
+
+    <button type="submit">Update Product</button>
+</form>

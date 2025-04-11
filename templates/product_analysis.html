@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Analysis</title>
+    <link rel="stylesheet" href="{% static 'product_analysis.css' %}">
+</head>
+<body>
+    <header>
+        <div class="top-nav">
+            <button class="file-btn" onclick="toggleDropdown()">File</button>
+            <div id="dropdown" class="dropdown-content">
+                <a href="{% url 'logout' %}">Logout</a>
+                <a href="javascript:window.close();">Quit</a>
+            </div>
+            <span class="dashboard-title">Product Analysis</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="content">
+            {% if product %}
+                <h3>Analysis for {{ product.name }}</h3>
+                <p>Price: ${{ product.price }}</p>
+                <p>Stock Level: {{ product.stock_level }}</p>
+                <p>Sales Count: {{ product.sales_count }}</p>
+                <!-- Additional analysis can be displayed here -->
+            {% else %}
+                <h3>Select a product to view analysis</h3>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer>
+        <p>ROOTED GURU POINT OF SALE SYSTEM</p>
+    </footer>
+
+    <script src="{% static 'product_analysis.js' %}"></script>
+</body>
+</html>

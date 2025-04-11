@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Operation</title>
+    <link rel="stylesheet" href="{% static 'operation.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>Rooted Guru Point of Sale System</h1>
+        <div class="user-info">
+            <span>Welcome, {{ request.user.first_name }}</span>
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <!-- Product Entry -->
+    <section id="product-entry">
+        <h2>Enter Product Code</h2>
+        <form id="product-form" method="POST" onsubmit="addToCart(event);">
+            {% csrf_token %}
+            <input type="text" id="product-code" name="product_code" placeholder="Enter product code" required>
+            <button type="submit">Add to Cart</button>
+        </form>
+    </section>
+
+    <!-- Cart Display -->
+    <section id="cart">
+        <h2>Cart</h2>
+        <table id="cart-table">
+            <thead>
+                <tr>
+                    <th>Product Code</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Weight</th>
+                    <th>Description</th>
+                    <th>Stock Level</th>
+                    <th>Sales Count</th>
+                    <th>Order Date</th>
+                    <th>Last Purchase Date</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>{{ item.product_code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>${{ item.price|floatformat:2 }}</td>
+                    <td>{{ item.weight }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.stock_level }}</td>
+                    <td>{{ item.sales_count }}</td>
+                    <td>{{ item.order_date }}</td>
+                    <td>{{ item.last_purchase_date }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.total|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="11">No items in the cart.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div id="total">
+            <strong>Total: $<span id="total-amount">{{ total_amount|floatformat:2 }}</span></strong>
+        </div>
+    </section>
+
+    <!-- Receipt Preview Section -->
+    <section id="receipt-preview">
+        <h2>Receipt Preview</h2>
+        <div id="receipt-content">
+            <h3>Rooted Guru Point Of Sale System</h3>
+            <h3>Tel: (+254)-7266-100-18</h3>
+            <h3>Receipt No: {{ receipt_number }}</h3>
+            <h3>Date: {{ receipt_time }}</h3>
+            <h2>Items</h2>
+            {% for item in cart %}
+                <p>{{ item.name }} x{{ item.quantity }} - ${{ item.total|floatformat:2 }}</p>
+            {% empty %}
+                <p>No items in the receipt.</p>
+            {% endfor %}
+            <p><strong>Total:</strong> ${{ total_amount|floatformat:2 }}</p>
+            <p><strong>Payment Method:</strong> {{ payment_method|default:"Not Selected" }}</p>
+        </div>
+    </section>
+
+    <!-- Payment Methods -->
+    <section id="payment">
+        <h2>Select Payment Method</h2>
+        <form method="POST" action="{% url 'select_payment' %}">
+            {% csrf_token %}
+            <div class="payment-container">
+                <label for="payment-method" class="payment-label">Choose a payment option:</label>
+                <select name="payment_method" id="payment-method" class="payment-select" required>
+                    <option value="">-- Select Payment Method --</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Mobile Payment">Mobile Payment</option>
+                </select>
+            </div>
+            <button type="submit" class="payment-btn">Proceed</button>
+        </form>
+    </section>
+
+
+    <!-- Action Buttons -->
+    <section id="actions">
+        <form method="POST" onsubmit="completeTransaction(event);">
+            {% csrf_token %}
+            <button type="submit" id="complete-transaction-btn">Complete Transaction</button>
+        </form>
+        <button id="print-receipt-btn">Print Receipt</button>
+    </section>
+
+    <script src="{% static 'operation.js' %}"></script>
+</body>
+</html>
