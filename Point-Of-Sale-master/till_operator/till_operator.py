@@ -1,4 +1,6 @@
 import os
+from kivy.lang import Builder
+
 os.environ['KIVY_LOG_LEVEL'] = 'debug'
 
 #from quickbooks import QuickBooks
@@ -14,19 +16,27 @@ os.environ['KIVY_LOG_LEVEL'] = 'debug'
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.lang import Builder
 
 import re
 from pymongo import MongoClient
-from escpos.printer import Usb  # Import the escpos printer
+import json
+from escpos.printer import Usb, Network  
 from kivy.config import Config
 from datetime import datetime
+from kivy.uix.tabbedpanel import TabbedPanel
+from printer_form import PrinterConfigForm 
+from kivy.uix.popup import Popup
 
 Config.set('kivy', 'window', 'sdl2')
 
-Builder.load_file('till_operator/operation.kv')
+#Builder.load_file('till_operator/operation.kv')
+kv_path = os.path.join(os.path.dirname(__file__), 'operation.kv')
+Builder.load_file(kv_path)
 
+Builder.load_file(os.path.join(os.path.dirname(__file__), 'printer_config.kv'))
 
+class TabbedPOS(TabbedPanel):
+    pass
 
 class OperationWindow(BoxLayout):
     def __init__(self, **kwargs):
@@ -55,7 +65,9 @@ class OperationWindow(BoxLayout):
         """
 
         try:
-            self.client = MongoClient('mongodb://127.0.0.1:27017/')
+            #mongodb://atlas-sql-672f3c5829142f0ad65fc45d-qzvb3.a.query.mongodb.net/silverpos?ssl=true&authSource=admin
+            #self.client = MongoClient('mongodb+srv://Rooted-Guru:rootedguru@rooted-guru-pos.qzvb3.mongodb.net/?retryWrites=true&w=majority&appName=Rooted-Guru-POS')
+            self.client = MongoClient('mongodb://localhost:27017/')
             self.db = self.client.silverpos
             self.stocks = self.db.stocks
         except Exception as e:
@@ -68,19 +80,33 @@ class OperationWindow(BoxLayout):
 
         # Initialize the USB printer
         try:
-            # Replace with your printer's VendorID and ProductID
-            self.printer = Usb(0x04b8, 0x0202)  # Example for Epson TM-T20
+            with open('printer_config.json') as f:
+                config = json.load(f)
+
+            printer_type = config.get("type", "usb")
+
+            if printer_type == "usb":
+                vendor_id = int(config["vendor_id"], 16)
+                product_id = int(config["product_id"], 16)
+                self.printer = Usb(vendor_id, product_id)
+            elif printer_type == "network":
+                ip_address = config["ip"]
+                self.printer = Network(ip_address)
+            else:
+                raise ValueError("Unsupported printer type in config")
+
         except Exception as e:
-            print(f"Failed to initialize printer: {e}")
-            self.printer = None  # Handle gracefully in the code
+            print(f"[ERROR] Failed to initialize printer: {e}")
+            self.printer = None 
 
     def logout(self):
         self.parent.parent.current = 'scrn_si'
 
     def update_purchases(self):
+        print("update_purchases triggered")
         pcode = self.ids.code_inp.text.strip()
         if not pcode:
-            return  # No product code entered
+            return  
 
         products_container = self.ids.products
 
@@ -150,8 +176,8 @@ class OperationWindow(BoxLayout):
         # Add product line to receipt
         receipt.text += f"{pname}\t x1\t\t{float(pprice):.2f}\n"
 
-        # Update total
-        self.total += float(pprice)  # Ensure total is updated correctly
+        # Update total 
+        receipt.text = re.sub(r"\nTotal:.*", "", receipt.text)  
         receipt.text += f"\nTotal:\t\t\t{self.total:.2f}\n"
 
         # Update the current product and price display
@@ -166,13 +192,21 @@ class OperationWindow(BoxLayout):
             print("Invalid payment method selected.")
         
         if (self.payment_method=='Cash'):
-            print("Methode used is cash")
+            print("Method used is cash")
         elif (self.payment_method=="Credit Card"):
             print("Method chosen is credit card")
         elif (self.payment_method=="Mobile Payment"):
             print("Method used is mobile payment")        
 
 
+    def open_printer_settings(self):
+        popup = Popup(
+            title="Printer Configuration",
+            content=PrinterConfigForm(),
+            size_hint=(0.7, 0.7),
+            auto_dismiss=True
+        )
+        popup.open()
 
     def print_receipt(self):
         if self.printer is None:
@@ -238,7 +272,7 @@ class OperationWindow(BoxLayout):
 
 
    
-    def update_inventory(product_code, new_qty):
+    def update_inventory(self, product_code, new_qty):
         item = Item.where("Sku = '{0}'".format(product_code), qb=self.qbo_client)
         if item:
             item.QtyOnHand = new_qty
@@ -266,7 +300,7 @@ class OperationWindow(BoxLayout):
             'date': date_str,
             'items': [],
             'total': self.total,
-            'payment_method': self.payment_method  # Store payment method
+            'payment_method': self.payment_method  
         }
 
         # Populate transaction details
@@ -293,10 +327,13 @@ class OperationWindow(BoxLayout):
 
         # Print the receipt
         self.print_receipt()
+        
+        #Clear the receipt preview section
+        self.ids.receipt_preview.text = 'Rooted Guru\nPoint Of Sale\nSystem\n'
 
-        # Reset the cart, payment method, and UI
+       # Reset the cart, payment method, and UI
         self.reset_transaction()
-        self.payment_method = None  # Reset payment method after transaction
+        self.payment_method = None  
 
 
     def reset_transaction(self):

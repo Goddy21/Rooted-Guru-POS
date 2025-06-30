@@ -14,6 +14,8 @@ from kivy.lang import Builder
 
 Config.set('kivy', 'window', 'sdl2')
 Builder.load_file("C:\Goddie\Rooted Guru\Point-Of-Sale-master\main.kv") 
+
+
 class MainWindow(BoxLayout):
     admin_widget = AdminWindow()
     signin_widget = SigninWindow()

@@ -1,4 +1,5 @@
 import os
+from kivy.lang import Builder
 
 os.environ['KIVY_LOG_LEVEL'] = 'debug'
 
@@ -20,11 +21,31 @@ import hashlib
 import pandas as pd
 import matplotlib.pyplot as plt
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg as FCK
+
+# Patch motion_notify_event if missing
+if not hasattr(FCK, 'motion_notify_event'):
+    def motion_notify_event(self, *args, **kwargs):
+        pass
+    setattr(FCK, 'motion_notify_event', motion_notify_event)
+
+# Patch resize_event if missing
+if not hasattr(FCK, 'resize_event'):
+    def resize_event(self, *args, **kwargs):
+        pass
+    setattr(FCK, 'resize_event', resize_event)
+
+
+
+
+
+
 from kivy.config import Config
 
 Config.set('kivy', 'window', 'sdl2')
 
-Builder.load_file('admin/admin.kv')
+#Builder.load_file('admin/admin.kv')
+kv_path = os.path.join(os.path.dirname(__file__), 'admin.kv')
+Builder.load_file(kv_path)
 class Notify(ModalView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -417,26 +438,78 @@ class AdminWindow(BoxLayout):
         return _stocks
 
     def view_stats(self):
-        plt.cla()
-        self.ids.analysis_res.clear_widgets()
-        target_product = self.ids.target_product.text
-        target = target_product[:target_product.find(' | ')]
-        name = target_product[target_product.find(' | '):]
+        try:
+            self.ids.scrn_mngr.current = 'scrn_analysis'
+            plt.cla()
+            self.ids.analysis_res.clear_widgets()
 
-        df = pd.read_csv('products_purchase.csv')
-        purchases = []
-        dates = []
-        count = 0
-        for x in range(len(df)):
-            if str(df.Product_Code[x]) == target:
-                purchases.append(df.Purchased[x])
-                dates.append(count)
-                count += 1
-        plt.bar(dates, purchases, color='teal', label=name)
-        plt.ylabel('Total Purchases')
-        plt.xlabel('day')
+            target_product = self.ids.target_product.text
+            target_code = target_product.split(' | ')[0]
 
-        self.ids.analysis_res.add_widget(FCK(plt.gcf()))
+            client = MongoClient()
+            db = client.silverpos
+            transactions = db.transactions  
+
+            records = []
+            for txn in transactions.find():
+                txn_date = txn.get('date')
+                for item in txn.get('items', []):
+                    if item.get('product_code') == target_code:
+                        records.append({
+                            'purchase_date': txn_date,
+                            'purchased_qty': item.get('quantity', 0)
+                        })
+
+            if not records:
+                self.ids.analysis_res.add_widget(Label(
+                    text="[b][color=#FF0000]No data available for this product[/color][/b]",
+                    markup=True,
+                    font_size='18sp',
+                    halign='center',
+                    size_hint_y=None,
+                    height=40
+                ))
+
+                return
+
+            df = pd.DataFrame(records)
+            df['purchase_date'] = pd.to_datetime(df['purchase_date'], errors='coerce')
+            df = df.dropna(subset=['purchase_date'])
+            df['day'] = df['purchase_date'].dt.date
+
+            df_grouped = df.groupby('day').sum(numeric_only=True).reset_index()
+
+            plt.cla()
+            plt.figure(figsize=(10, 4)) 
+            plt.bar(df_grouped['day'].astype(str), df_grouped['purchased_qty'], color='teal')
+            plt.xlabel("Date")
+            plt.ylabel("Total Purchased")
+            plt.xticks(rotation=45, ha='right', fontsize=9)
+            plt.tight_layout()
+
+            self.ids.analysis_res.clear_widgets()
+            canvas = FCK(plt.gcf())
+            canvas.draw()
+            if not hasattr(canvas, "resize_event"):
+                canvas.resize_event = lambda: None
+            self.ids.analysis_res.add_widget(canvas)
+            self.ids.analysis_res.canvas.ask_update()
+
+            df.to_csv("products_purchase.csv", index=False)
+            print("→ Data plotted for", target_code)
+            print(df_grouped)
+
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            self.notify.add_widget(Label(
+                text=f'[color=#FF0000][b]Plot Error: {str(e)}[/b][/color]', markup=True))
+            self.notify.open()
+            Clock.schedule_once(self.killswitch, 2)
+
+
+
+
 
     def change_screen(self, instance):
         if instance.text == 'Manage Products':

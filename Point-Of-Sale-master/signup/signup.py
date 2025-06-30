@@ -1,5 +1,6 @@
 import hashlib
 import os
+from kivy.lang import Builder
 from pymongo import MongoClient
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -11,7 +12,9 @@ os.environ['KIVY_LOG_LEVEL'] = 'debug'
 
 Config.set('kivy', 'window', 'sdl2')
 
-Builder.load_file('signup/signup.kv')
+#Builder.load_file('signup/signup.kv')
+kv_path = os.path.join(os.path.dirname(__file__), 'signup.kv')
+Builder.load_file(kv_path)
 
 class SignupWindow(BoxLayout):
     def __init__(self, **kwargs):

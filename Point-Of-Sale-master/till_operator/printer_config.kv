@@ -1,0 +1,134 @@
+<PrinterConfigForm>:
+    orientation: "vertical"
+    size_hint: 1, 1
+    padding: [30, 30]
+    spacing: 20
+
+    canvas.before:
+        Color:
+            rgba: (0.95, 0.95, 0.95, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        text: "Printer Configuration"
+        font_size: '22sp'
+        bold: True
+        color: 0, 0, 0, 1
+        size_hint_y: None
+        height: 40
+        halign: 'center'
+        valign: 'middle'
+        text_size: self.size
+
+    Widget:  
+        size_hint_y: None
+        height: 40
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: None, None
+        width: min(self.parent.width * 0.95, 600)
+        height: self.minimum_height
+        pos_hint: {"center_x": 0.5}
+        spacing: 20
+
+        GridLayout:
+            cols: 2
+            spacing: 12
+            row_default_height: 44
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            size_hint_x: 1
+
+            Label:
+                text: "Vendor ID:"
+                font_size: '16sp'
+                halign: "right"
+                valign: "middle"
+                text_size: self.size
+                color: 0, 0, 0, 1
+                size_hint_x: 0.4
+
+            TextInput:
+                id: vendor_id
+                hint_text: "e.g. 0x04b8"
+                font_size: '16sp'
+                multiline: False
+                size_hint_x: 0.9
+
+            Label:
+                text: "Product ID:"
+                font_size: '16sp'
+                halign: "right"
+                valign: "middle"
+                text_size: self.size
+                color: 0, 0, 0, 1
+
+            TextInput:
+                id: product_id
+                hint_text: "e.g. 0x0202"
+                font_size: '16sp'
+                multiline: False
+                size_hint_x: 0.9
+
+            Label:
+                text: "Interface:"
+                font_size: '16sp'
+                halign: "right"
+                valign: "middle"
+                text_size: self.size
+                color: 0, 0, 0, 1
+
+            TextInput:
+                id: interface
+                hint_text: "optional"
+                font_size: '16sp'
+                multiline: False
+                size_hint_x: 0.9
+
+            Label:
+                text: "Timeout:"
+                font_size: '16sp'
+                halign: "right"
+                valign: "middle"
+                text_size: self.size
+                color: 0, 0, 0, 1
+
+            TextInput:
+                id: timeout
+                hint_text: "optional"
+                font_size: '16sp'
+                multiline: False
+                size_hint_x: 0.9
+
+            Label:
+                text: "Encoding:"
+                font_size: '16sp'
+                halign: "right"
+                valign: "middle"
+                text_size: self.size
+                color: 0, 0, 0, 1
+
+            TextInput:
+                id: encoding
+                hint_text: "e.g. utf-8"
+                font_size: '16sp'
+                multiline: False
+                size_hint_x: 0.9
+
+        Button:
+            text: "Save Printer Settings"
+            font_size: '18sp'
+            size_hint_y: None
+            height: 50
+            background_normal: ''
+            background_color: (0.16, 0.4, 0.64, 1)
+            color: 1, 1, 1, 1
+            on_release: root.save_config()
+
+    Widget:  
+        size_hint_y: None
+        height: 40
