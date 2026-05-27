@@ -1,0 +1,217 @@
+#: import Animation kivy.animation.Animation
+
+<FlatButton@ButtonBehavior+Label>:
+    font_size: 16
+
+<SigninWindow>:
+    FloatLayout:
+        # Soft gray page background
+        canvas.before:
+            Color:
+                rgba: (0.95, 0.95, 0.97, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # Top Navigation Bar
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            pos_hint: {"top": 1}
+            padding: 10, 0
+            canvas.before:
+                Color:
+                    rgba: (0.10, 0.31, 0.55, 1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Image:
+                id: nav_logo
+                source: ''
+                size_hint_x: None
+                width: 40
+                height: 40
+                fit_mode: 'contain'
+                size_hint_y: None
+
+            Label:
+                text: "Rooted Guru Point of Sale Terminal"
+                bold: True
+                color: (1, 1, 1, 1)
+                font_size: 20
+                size_hint_x: 0.85
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+
+            FlatButton:
+                text: "x"
+                size_hint_x: 0.1
+                color: (1, 1, 1, 1)
+                font_size: 20
+
+        # Centered Sign In Card
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: None, None
+            size: 420, 480
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            spacing: 12
+            padding: [30, 25]
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [12, 12, 12, 12]
+                Color:
+                    rgba: (0.82, 0.87, 0.93, 1)
+                Line:
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, 12)
+                    width: 1
+
+            # Logo circle + image
+            BoxLayout:
+                size_hint_y: None
+                height: 70
+                orientation: 'horizontal'
+
+                Widget:
+                    size_hint_x: 1
+
+                BoxLayout:
+                    size_hint_x: None
+                    width: 64
+                    size_hint_y: None
+                    height: 64
+                    canvas.before:
+                        Color:
+                            rgba: (0.88, 0.93, 0.98, 1)
+                        Ellipse:
+                            pos: self.pos
+                            size: self.size
+
+                    Image:
+                        id: card_logo
+                        source: ''
+                        fit_mode: 'contain'
+                        size_hint: 1, 1
+
+                Widget:
+                    size_hint_x: 1
+
+            Label:
+                text: "[b]Sign In[/b]"
+                font_size: '22sp'
+                markup: True
+                color: (0.10, 0.31, 0.55, 1)
+                size_hint_y: None
+                height: 28
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+
+            Label:
+                text: "Welcome back — enter your credentials"
+                font_size: '13sp'
+                color: (0.55, 0.60, 0.68, 1)
+                size_hint_y: None
+                height: 18
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+
+            Label:
+                id: info
+                text: ""
+                markup: True
+                size_hint_y: None
+                height: 18
+                halign: 'center'
+                text_size: self.size
+
+            # Username input — NO canvas override so text stays visible
+            TextInput:
+                id: username_field
+                hint_text: "Username"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                size_hint_y: None
+                height: 44
+                font_size: '16sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: pwd_field.focus = True
+
+            # Password input — NO canvas override so text stays visible
+            TextInput:
+                id: pwd_field
+                hint_text: "Password"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                password: True
+                size_hint_y: None
+                height: 44
+                font_size: '16sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: root.validate_user()
+
+            # Sign In button
+            Button:
+                text: "Sign In"
+                size_hint_y: None
+                height: 44
+                font_size: '16sp'
+                bold: True
+                background_normal: ''
+                background_color: (0.10, 0.38, 0.68, 1)
+                color: (1, 1, 1, 1)
+                on_release: root.validate_user()
+
+            FlatButton:
+                text: "[color=#2255B0]I don't have an account[/color]"
+                markup: True
+                size_hint_y: None
+                height: 36
+                font_size: '15sp'
+                halign: 'center'
+                text_size: self.size
+                valign: 'middle'
+                on_release: root.go_to_signup()
+
+            FlatButton:
+                text: "[color=#CC2200][u]Forgot Password?[/u][/color]"
+                markup: True
+                size_hint_y: None
+                height: 32
+                font_size: '14sp'
+                halign: 'center'
+                text_size: self.size
+                valign: 'middle'
+                on_release: root.forgot_password()
+
+        # Footer
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            pos_hint: {"x": 0, "y": 0}
+            canvas.before:
+                Color:
+                    rgba: (0.10, 0.31, 0.55, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: 'Software by Rooted Guru Company Limited'
+                color: (0.85, 0.90, 1.0, 1)
+                font_size: '13sp'
+                halign: 'center'
+                text_size: self.size
+                valign: 'middle'

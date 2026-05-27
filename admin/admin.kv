@@ -1,0 +1,371 @@
+#: import Window kivy.core.window.Window
+
+<FlatButton@ButtonBehavior+Label>:
+    text: 'default'
+
+<AdminWindow>
+    id: main_win
+    orientation: 'vertical'
+
+    canvas.before:
+        Color:
+            rgba: (0.93, 0.95, 0.98, 1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    # Top Nav Bar
+    BoxLayout:
+        id: top_nav
+        size_hint_y: None
+        height: 44
+        spacing: 0
+        canvas.before:
+            Color:
+                rgba: (0.10, 0.31, 0.55, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Image:
+            id: admin_logo
+            source: ''
+            size_hint_x: None
+            width: 36
+            fit_mode: 'contain'
+
+        FlatButton:
+            id: file_trigger
+            text: 'File'
+            on_release: file_dropdown.open(self)
+            size_hint: (None, None)
+            width: 60
+            height: 44
+            font_size: '15sp'
+            color: (1, 1, 1, 1)
+
+        Label:
+            text: 'Admin Dashboard'
+            bold: True
+            size_hint: (1, None)
+            height: 44
+            color: (1, 1, 1, 1)
+            font_size: '17sp'
+            halign: 'center'
+            text_size: self.size
+            valign: 'middle'
+
+        Image:
+            source: 'guru.jpg'
+            size_hint_x: None
+            width: 36
+            fit_mode: 'contain'
+
+    # DropDown declared with size_hint/size zeroed so it never occupies layout space
+    DropDown:
+        id: file_dropdown
+        auto_dismiss: True
+        size_hint: (None, None)
+        size: (0, 0)
+        Button:
+            text: 'Logout'
+            size_hint_y: None
+            height: 36
+            background_normal: ''
+            background_color: (0.14, 0.42, 0.72, 1)
+            color: (1, 1, 1, 1)
+            font_size: '14sp'
+            on_release:
+                root.logout()
+                file_dropdown.dismiss()
+        Button:
+            text: 'Quit'
+            size_hint_y: None
+            height: 36
+            background_normal: ''
+            background_color: (0.55, 0.15, 0.15, 1)
+            color: (1, 1, 1, 1)
+            font_size: '14sp'
+            on_release:
+                Window.close()
+                file_dropdown.dismiss()
+
+    BoxLayout:
+        id: content_nav
+
+        # Sidebar
+        BoxLayout:
+            id: nav_tabs
+            size_hint_x: .2
+            orientation: 'vertical'
+            spacing: 3
+            canvas.before:
+                Color:
+                    rgba: (0.14, 0.42, 0.72, 1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Label:
+                text: 'Navigation'
+                size_hint_y: None
+                height: 32
+                font_size: '12sp'
+                color: (0.75, 0.88, 1.0, 1)
+                bold: True
+                halign: 'center'
+                text_size: self.size
+                valign: 'middle'
+
+            ToggleButton:
+                id: user_toggle
+                text: 'Manage Users'
+                size_hint_y: .1
+                state: 'down'
+                background_color: (0.20, 0.55, 0.88, 1)
+                background_normal: ''
+                background_down: ''
+                color: (1, 1, 1, 1)
+                font_size: '14sp'
+                bold: True
+                group: 'admin_navs'
+                on_state: root.change_screen(self)
+
+            ToggleButton:
+                id: products_toggle
+                text: 'Manage Products'
+                size_hint_y: .1
+                background_color: (0.18, 0.50, 0.82, 1)
+                background_normal: ''
+                background_down: ''
+                color: (1, 1, 1, 1)
+                font_size: '14sp'
+                group: 'admin_navs'
+                on_state: root.change_screen(self)
+
+            ToggleButton:
+                id: analysis_toggle
+                text: 'Product Analysis'
+                size_hint_y: .1
+                background_color: (0.16, 0.45, 0.74, 1)
+                background_normal: ''
+                background_down: ''
+                color: (1, 1, 1, 1)
+                font_size: '14sp'
+                group: 'admin_navs'
+                on_state: root.change_screen(self)
+
+            Label:
+                id: sp
+                text: 'Rooted Guru POS'
+                size_hint_y: .7
+                font_size: '11sp'
+                color: (0.75, 0.88, 1.0, 1)
+                halign: 'center'
+                text_size: self.size
+                valign: 'bottom'
+
+        # Main Content Area
+        BoxLayout:
+            id: all_content
+            size_hint_x: .8
+            padding: (16, 10)
+            canvas.before:
+                Color:
+                    rgba: (0.93, 0.95, 0.98, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            ScreenManager:
+                id: scrn_mngr
+
+                Screen:
+                    id: scrn_content
+                    name: 'scrn_content'
+
+                    BoxLayout:
+                        orientation: 'vertical'
+                        spacing: 10
+
+                        BoxLayout:
+                            id: scrn_contents
+
+                        BoxLayout:
+                            id: ops_fields
+                            spacing: 10
+                            size_hint_y: None
+                            height: 38
+
+                        BoxLayout:
+                            id: ops_btns
+                            spacing: 10
+                            size_hint_y: None
+                            height: 44
+
+                            Button:
+                                id: crud_add
+                                text: '+ Add User'
+                                background_normal: ''
+                                background_color: (0.07, 0.48, 0.24, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '14sp'
+                                bold: True
+                                on_release: root.add_user_fields()
+
+                            Button:
+                                id: crud_update
+                                text: 'Update User'
+                                background_normal: ''
+                                background_color: (0.10, 0.38, 0.68, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '14sp'
+                                bold: True
+                                on_release: root.update_user_fields()
+
+                            Button:
+                                id: crud_remove
+                                text: 'Remove User'
+                                background_normal: ''
+                                background_color: (0.55, 0.15, 0.15, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '14sp'
+                                bold: True
+                                on_release: root.remove_user_fields()
+
+                Screen:
+                    id: scrn_product_content
+                    name: 'scrn_product_content'
+
+                    BoxLayout:
+                        orientation: 'vertical'
+                        spacing: 10
+
+                        BoxLayout:
+                            id: scrn_product_contents
+
+                        BoxLayout:
+                            id: ops_fields_p
+                            spacing: 10
+                            size_hint_y: None
+                            height: 38
+
+                        BoxLayout:
+                            id: ops_btns_p
+                            spacing: 10
+                            size_hint_y: None
+                            height: 44
+
+                            Button:
+                                id: crud_add_p
+                                text: '+ Add Product'
+                                background_normal: ''
+                                background_color: (0.07, 0.48, 0.24, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '14sp'
+                                bold: True
+                                on_release: root.add_product_fields()
+
+                            Button:
+                                id: crud_update_p
+                                text: 'Update Product'
+                                background_normal: ''
+                                background_color: (0.10, 0.38, 0.68, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '14sp'
+                                bold: True
+                                on_release: root.update_product_fields()
+
+                            Button:
+                                id: crud_remove_p
+                                text: 'Remove Product'
+                                background_normal: ''
+                                background_color: (0.55, 0.15, 0.15, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '14sp'
+                                bold: True
+                                on_release: root.remove_product_fields()
+
+                Screen:
+                    id: scrn_analysis
+                    name: 'scrn_analysis'
+
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding: [10, 10, 10, 10]
+                        spacing: 10
+
+                        BoxLayout:
+                            size_hint_y: None
+                            height: 52
+                            spacing: 10
+                            padding: [10, 4]
+
+                            Spinner:
+                                id: target_product
+                                text: 'Choose Product'
+                                size_hint_x: 0.7
+                                background_normal: ''
+                                background_color: (0.10, 0.38, 0.68, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '15sp'
+
+                            Button:
+                                id: submit_analysis
+                                text: 'View Stats'
+                                size_hint_x: 0.3
+                                background_normal: ''
+                                background_color: (0.07, 0.48, 0.24, 1)
+                                color: (1, 1, 1, 1)
+                                font_size: '15sp'
+                                bold: True
+                                on_release: root.view_stats()
+
+                        BoxLayout:
+                            padding: 10
+                            canvas.before:
+                                Color:
+                                    rgba: (1, 1, 1, 1)
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                                    radius: [10, 10, 10, 10]
+                                Color:
+                                    rgba: (0.82, 0.87, 0.93, 1)
+                                Line:
+                                    rounded_rectangle: (self.x, self.y, self.width, self.height, 10)
+                                    width: 1
+
+                            ScrollView:
+                                id: analysis_res
+                                do_scroll_x: True
+                                do_scroll_y: True
+                                bar_width: 8
+                                scroll_type: ['bars', 'content']
+
+                                BoxLayout:
+                                    id: analysis_res_box
+                                    orientation: 'vertical'
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    padding: [10, 10]
+
+    # Footer
+    BoxLayout:
+        id: footer
+        size_hint_y: None
+        height: 30
+        canvas.before:
+            Color:
+                rgba: (0.10, 0.31, 0.55, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: 'Software by Rooted Guru Company Limited'
+            font_size: '13sp'
+            color: (0.85, 0.90, 1.0, 1)
+            halign: 'center'
+            text_size: self.size
+            valign: 'middle'

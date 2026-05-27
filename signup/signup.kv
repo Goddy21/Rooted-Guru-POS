@@ -1,0 +1,247 @@
+<FlatButton@ButtonBehavior+Label>:
+    font_size: 16
+
+<SignupWindow>:
+    FloatLayout:
+        # Soft gray page background
+        canvas.before:
+            Color:
+                rgba: (0.95, 0.95, 0.97, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # Top Nav Bar
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            pos_hint: {"top": 1}
+            padding: 10, 0
+            canvas.before:
+                Color:
+                    rgba: (0.10, 0.31, 0.55, 1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Image:
+                id: nav_logo
+                source: ''
+                size_hint_x: None
+                width: 40
+                height: 40
+                fit_mode: 'contain'
+                size_hint_y: None
+
+            Label:
+                text: "Rooted Guru Point of Sale Terminal"
+                bold: True
+                color: (1, 1, 1, 1)
+                font_size: 20
+                size_hint_x: 0.85
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+
+            FlatButton:
+                text: "x"
+                size_hint_x: 0.1
+                color: (1, 1, 1, 1)
+                font_size: 20
+
+        # Sign Up Card
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: None, None
+            size: 480, 600
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            spacing: 10
+            padding: [30, 20]
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [12, 12, 12, 12]
+                Color:
+                    rgba: (0.82, 0.87, 0.93, 1)
+                Line:
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, 12)
+                    width: 1
+
+            # Logo circle
+            BoxLayout:
+                size_hint_y: None
+                height: 64
+                orientation: 'horizontal'
+
+                Widget:
+                    size_hint_x: 1
+
+                BoxLayout:
+                    size_hint_x: None
+                    width: 56
+                    size_hint_y: None
+                    height: 56
+                    canvas.before:
+                        Color:
+                            rgba: (0.88, 0.93, 0.98, 1)
+                        Ellipse:
+                            pos: self.pos
+                            size: self.size
+                    Image:
+                        id: card_logo
+                        source: ''
+                        fit_mode: 'contain'
+
+                Widget:
+                    size_hint_x: 1
+
+            Label:
+                text: "[b]Sign Up[/b]"
+                font_size: '22sp'
+                markup: True
+                color: (0.10, 0.31, 0.55, 1)
+                size_hint_y: None
+                height: 28
+                text_size: self.size
+                halign: 'center'
+                valign: 'middle'
+
+            Label:
+                id: info
+                text: ''
+                markup: True
+                size_hint_y: None
+                height: 18
+                halign: 'center'
+                text_size: self.size
+
+            # All TextInputs without canvas overrides so typed text stays visible
+            TextInput:
+                id: first_name
+                hint_text: "First Name"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                size_hint_y: None
+                height: 42
+                font_size: '15sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: last_name.focus = True
+
+            TextInput:
+                id: last_name
+                hint_text: "Last Name"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                size_hint_y: None
+                height: 42
+                font_size: '15sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: username_field.focus = True
+
+            TextInput:
+                id: username_field
+                hint_text: "Username"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                size_hint_y: None
+                height: 42
+                font_size: '15sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: designation_field.focus = True
+
+            TextInput:
+                id: designation_field
+                hint_text: "Designation (Operator/Administrator)"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                size_hint_y: None
+                height: 42
+                font_size: '15sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: pwd_field.focus = True
+
+            TextInput:
+                id: pwd_field
+                hint_text: "Password"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                password: True
+                size_hint_y: None
+                height: 42
+                font_size: '15sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: confirm_pwd_field.focus = True
+
+            TextInput:
+                id: confirm_pwd_field
+                hint_text: "Confirm Password"
+                hint_text_color: (0.60, 0.65, 0.72, 1)
+                multiline: False
+                password: True
+                size_hint_y: None
+                height: 42
+                font_size: '15sp'
+                padding: [12, 10]
+                background_color: (0.97, 0.98, 1.0, 1)
+                foreground_color: (0.10, 0.15, 0.25, 1)
+                cursor_color: (0.10, 0.31, 0.55, 1)
+                on_text_validate: root.register_user()
+
+            Button:
+                text: "Sign Up"
+                size_hint_y: None
+                height: 44
+                font_size: '16sp'
+                bold: True
+                background_normal: ''
+                background_color: (0.10, 0.38, 0.68, 1)
+                color: (1, 1, 1, 1)
+                on_release: root.register_user()
+
+            FlatButton:
+                text: "[color=#2255B0]I already have an account[/color]"
+                markup: True
+                size_hint_y: None
+                height: 36
+                font_size: '15sp'
+                halign: 'center'
+                text_size: self.size
+                valign: 'middle'
+                on_release: root.go_to_signin()
+
+        # Footer
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            pos_hint: {"x": 0, "y": 0}
+            canvas.before:
+                Color:
+                    rgba: (0.10, 0.31, 0.55, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: 'Software by Rooted Guru Company Limited'
+                color: (0.85, 0.90, 1.0, 1)
+                font_size: '13sp'
+                halign: 'center'
+                text_size: self.size
+                valign: 'middle'

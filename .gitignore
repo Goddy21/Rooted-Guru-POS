@@ -1,0 +1,100 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter and IPython
+.ipynb_checkpoints
+.profile
+.ipython/
+
+# Logs and output
+*.log
+*.csv
+*.db
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Matplotlib cache
+.matplotlib/
+
+# Kivy-specific
+.kivy/
+.kivy_cache/
+
+# Config and credentials
+*.pem
+*.key
+*.crt
+*.cfg
+*.ini
+*.json
+!printer_config.json  # Remove "!" to ignore it too
+
+# Backup files
+*.bak
+*.old
+*.orig
+*.swp
+
+# Images and builds
+*.png
+*.jpg
+*.ico
+*.bmp
+*.gif
+
+# Python wheels
+*.whl
+
+# Distribution archives
+*.egg
+*.egg-info/
+dist/
+sdist/
+*.tar.gz
+*.zip
+
+# MongoDB data (if exported)
+dump/
+*.bson
