@@ -27,6 +27,7 @@ from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg as FCK
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from utils.paths import GURU_JPG
+from config import MONGO_URI, MONGO_DB
 
 # Patch motion_notify_event if missing
 if not hasattr(FCK, 'motion_notify_event'):
@@ -39,12 +40,6 @@ if not hasattr(FCK, 'resize_event'):
     def resize_event(self, *args, **kwargs):
         pass
     setattr(FCK, 'resize_event', resize_event)
-
-
-
-
-
-
 
 
 #Builder.load_file('admin/admin.kv')
@@ -61,8 +56,8 @@ class AdminWindow(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        client = MongoClient()
-        db = client.silverpos
+        client = MongoClient(MONGO_URI)
+        db = client[MONGO_DB]
         self.users = db.users
         self.products = db.stocks
         self.notify = Notify()
@@ -367,8 +362,8 @@ class AdminWindow(BoxLayout):
                 content.add_widget(stocktable)
 
     def get_users(self):
-        client = MongoClient()
-        db = client.silverpos
+        client = MongoClient(MONGO_URI)
+        db = client[MONGO_DB]
         users = db.users
         _users = OrderedDict()
         _users['first_names'] = {}
@@ -406,8 +401,8 @@ class AdminWindow(BoxLayout):
         return _users
 
     def get_products(self):
-        client = MongoClient()
-        db = client.silverpos
+        client = MongoClient(MONGO_URI)
+        db = client[MONGO_DB]
         products = db.stocks
         _stocks = OrderedDict()
         _stocks['product_code'] = {}
@@ -470,8 +465,8 @@ class AdminWindow(BoxLayout):
             target_product = self.ids.target_product.text
             target_code = target_product.split(' | ')[0]
 
-            client = MongoClient()
-            db = client.silverpos
+            client = MongoClient(MONGO_URI)
+            db = client[MONGO_DB]
             transactions = db.transactions  
 
             records = []

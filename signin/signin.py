@@ -19,6 +19,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.image import Image
 from kivy.utils import get_color_from_hex
 from utils.paths import GURU_JPG
+from config import MONGO_URI, MONGO_DB
 
 
 #Builder.load_file('signin/signin.kv')
@@ -34,8 +35,8 @@ class SigninWindow(BoxLayout):
         self.ids.card_logo.source = GURU_JPG
 
     def validate_user(self):
-        client = MongoClient()
-        db = client.silverpos
+        client = MongoClient(MONGO_URI)
+        db = client[MONGO_DB]
         users = db.users
 
         user = self.ids.username_field
@@ -118,8 +119,8 @@ class SigninWindow(BoxLayout):
                 message_label.text = "[color=#FF0000]Passwords do not match[/color]"
                 return
 
-            client = MongoClient()
-            db = client.silverpos
+            client = MongoClient(MONGO_URI)
+            db = client[MONGO_DB]
             users = db.users
             user = users.find_one({"user_name": uname})
 

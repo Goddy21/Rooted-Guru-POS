@@ -28,6 +28,7 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from printer_form import PrinterConfigForm 
 from kivy.uix.popup import Popup
 from utils.paths import GURU_JPG
+from config import MONGO_URI, MONGO_DB
 
 Config.set('kivy', 'window', 'sdl2')
 
@@ -47,7 +48,7 @@ class OperationWindow(BoxLayout):
         #session_manager = QuickBooksSessionManager()
         #qb_client = session_manager.get_quickbooks_client()
 
-        self.payment_method = None  # Store selected payment method
+        self.payment_method = None 
         self.available_payment_methods = ['Cash', 'Credit Card', 'Mobile Payment']
 
 
@@ -67,14 +68,11 @@ class OperationWindow(BoxLayout):
         """
 
         try:
-            #mongodb://atlas-sql-672f3c5829142f0ad65fc45d-qzvb3.a.query.mongodb.net/silverpos?ssl=true&authSource=admin
-            #self.client = MongoClient('mongodb+srv://Rooted-Guru:rootedguru@rooted-guru-pos.qzvb3.mongodb.net/?retryWrites=true&w=majority&appName=Rooted-Guru-POS')
-            self.client = MongoClient('mongodb://localhost:27017/')
-            self.db = self.client.silverpos
+            self.client = MongoClient(MONGO_URI)   
+            self.db     = self.client[MONGO_DB] 
             self.stocks = self.db.stocks
         except Exception as e:
             print(f"Failed to connect to MongoDB: {e}")
-            # Optionally, show a popup to notify the user
 
         self.cart = []
         self.qty = []
@@ -279,9 +277,6 @@ class OperationWindow(BoxLayout):
             sales_receipt.save(qb=self.qb_client)
         except Exception as e:
             print(f"Error saving sales receipt: {e}")
-
-
-
    
     def update_inventory(self, product_code, new_qty):
         item = Item.where("Sku = '{0}'".format(product_code), qb=self.qbo_client)

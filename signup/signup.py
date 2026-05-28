@@ -7,6 +7,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.config import Config
 from utils.paths import GURU_JPG
+from config import MONGO_URI, MONGO_DB
 
 # Ensure Kivy logs for debugging
 os.environ['KIVY_LOG_LEVEL'] = 'debug'
@@ -27,8 +28,8 @@ class SignupWindow(BoxLayout):
 
     def register_user(self):
         # MongoDB client setup
-        client = MongoClient()
-        db = client.silverpos
+        client = MongoClient(MONGO_URI)
+        db = client[MONGO_DB]
         users = db.users
 
         # Get the user input from the TextInput fields
